@@ -89,7 +89,7 @@ function App() {
 
             <div>
               <h1 className="text-xl font-semibold tracking-tight">
-                Momentum
+                Kanban Task Board
               </h1>
 
               <p className="hidden text-xs text-muted-foreground sm:block">
