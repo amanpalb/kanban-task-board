@@ -64,29 +64,29 @@ export function useTasks(enabled = true) {
   }
 
   async function moveTask(taskId: string, status: TaskStatus) {
-    const previousTasks = tasks
+  const previousTasks = tasks
+
+  setTasks((currentTasks) =>
+    currentTasks.map((task) =>
+      task.id === taskId ? { ...task, status } : task,
+    ),
+  )
+
+  try {
+    const updatedTask = await moveTaskRequest(taskId, status)
 
     setTasks((currentTasks) =>
       currentTasks.map((task) =>
-        task.id === taskId ? { ...task, status } : task,
+        task.id === taskId ? updatedTask : task,
       ),
     )
 
-    try {
-      const updatedTask = await moveTaskRequest(taskId, status)
-
-      setTasks((currentTasks) =>
-        currentTasks.map((task) =>
-          task.id === taskId ? updatedTask : task,
-        ),
-      )
-
-      return updatedTask
-    } catch (caughtError) {
-      setTasks(previousTasks)
-      throw caughtError
-    }
+    return updatedTask
+  } catch (caughtError) {
+    setTasks(previousTasks)
+    throw caughtError
   }
+}
 
   async function deleteTask(taskId: string) {
     await deleteTaskRequest(taskId)

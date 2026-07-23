@@ -23,6 +23,7 @@ function App() {
     isLoading: areTasksLoading,
     error: tasksError,
     createTask,
+    moveTask,
   } = useTasks(Boolean(user))
 
   if (isAuthLoading || areTasksLoading) {
@@ -127,7 +128,10 @@ function App() {
             </p>
           </div>
 
-          <Board tasks={tasks} />
+          <Board
+            tasks={tasks}
+            onMoveTask={moveTask}
+          />
         </section>
       </div>
     </main>
