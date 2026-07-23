@@ -8,11 +8,13 @@ import type { Task } from "@/types/task"
 interface BoardColumnProps {
   column: BoardColumnDefinition
   tasks: Task[]
+  onTaskSelect: (task: Task) => void
 }
 
 export function BoardColumn({
   column,
   tasks,
+  onTaskSelect,
 }: BoardColumnProps) {
   const { isOver, setNodeRef } = useDroppable({
     id: column.id,
@@ -51,6 +53,7 @@ export function BoardColumn({
             <DraggableTaskCard
               key={task.id}
               task={task}
+              onSelect={onTaskSelect}
             />
           ))
         ) : (

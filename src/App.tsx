@@ -1,17 +1,22 @@
+import { useState, type ReactNode } from "react"
 import {
   CheckCircle2,
   CircleAlert,
   ClipboardList,
   LoaderCircle,
+  Search,
   TriangleAlert,
 } from "lucide-react"
 
 import { Board } from "@/components/board/Board"
+import { CreateTaskDialog } from "@/components/task/CreateTaskDialog"
+import { Input } from "@/components/ui/input"
 import { useAuth } from "@/hooks/useAuth"
 import { useTasks } from "@/hooks/useTasks"
-import { CreateTaskDialog } from "@/components/task/CreateTaskDialog"
 
 function App() {
+  const [searchQuery, setSearchQuery] = useState("")
+
   const {
     user,
     isLoading: isAuthLoading,
@@ -24,6 +29,8 @@ function App() {
     error: tasksError,
     createTask,
     moveTask,
+    updateTask,
+    deleteTask,
   } = useTasks(Boolean(user))
 
   if (isAuthLoading || areTasksLoading) {
@@ -44,9 +51,11 @@ function App() {
       <main className="flex min-h-screen items-center justify-center bg-background p-6">
         <div className="max-w-md rounded-2xl border bg-card p-6 shadow-sm">
           <TriangleAlert className="mb-4 size-7 text-destructive" />
+
           <h1 className="text-xl font-semibold">
             Unable to load the board
           </h1>
+
           <p className="mt-2 text-sm text-muted-foreground">
             {error}
           </p>
@@ -54,6 +63,14 @@ function App() {
       </main>
     )
   }
+
+  const normalizedSearchQuery = searchQuery.trim().toLowerCase()
+
+  const filteredTasks = normalizedSearchQuery
+    ? tasks.filter((task) =>
+        task.title.toLowerCase().includes(normalizedSearchQuery),
+      )
+    : tasks
 
   const completedTasks = tasks.filter(
     (task) => task.status === "done",
@@ -65,26 +82,55 @@ function App() {
     <main className="min-h-screen bg-background">
       <header className="border-b border-border/70 bg-background/95">
         <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-6 px-6 py-5">
-          <div>
-            <div className="flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-                <ClipboardList className="size-5" />
-              </div>
+          <div className="flex items-center gap-3">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+              <ClipboardList className="size-5" />
+            </div>
 
-              <div>
-                <h1 className="text-xl font-semibold tracking-tight">
-                  Momentum
-                </h1>
-                <p className="text-xs text-muted-foreground">
-                  Personal task workspace
-                </p>
-              </div>
+            <div>
+              <h1 className="text-xl font-semibold tracking-tight">
+                Momentum
+              </h1>
+
+              <p className="text-xs text-muted-foreground">
+                Personal task workspace
+              </p>
             </div>
           </div>
 
-          <CreateTaskDialog onCreateTask={createTask} />
+          <div className="flex items-center gap-3">
+            <div className="relative hidden sm:block">
+              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+
+              <Input
+                type="search"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder="Search tasks..."
+                aria-label="Search tasks by title"
+                className="w-56 pl-9 lg:w-72"
+              />
+            </div>
+
+            <CreateTaskDialog onCreateTask={createTask} />
+          </div>
         </div>
       </header>
+
+      <div className="border-b border-border/70 px-6 py-3 sm:hidden">
+        <div className="relative">
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+
+          <Input
+            type="search"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder="Search tasks..."
+            aria-label="Search tasks by title"
+            className="pl-9"
+          />
+        </div>
+      </div>
 
       <div className="mx-auto max-w-[1600px] space-y-8 px-6 py-8">
         <section>
@@ -124,13 +170,17 @@ function App() {
             </h2>
 
             <p className="text-sm text-muted-foreground">
-              Organize tasks across each stage of your workflow.
+              {normalizedSearchQuery
+                ? `Showing ${filteredTasks.length} of ${tasks.length} tasks.`
+                : "Organize tasks across each stage of your workflow."}
             </p>
           </div>
 
           <Board
-            tasks={tasks}
+            tasks={filteredTasks}
             onMoveTask={moveTask}
+            onUpdateTask={updateTask}
+            onDeleteTask={deleteTask}
           />
         </section>
       </div>
@@ -141,7 +191,7 @@ function App() {
 interface StatCardProps {
   title: string
   value: number
-  icon: React.ReactNode
+  icon: ReactNode
 }
 
 function StatCard({

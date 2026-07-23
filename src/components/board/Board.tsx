@@ -15,8 +15,13 @@ import { TriangleAlert } from "lucide-react"
 
 import { BoardColumn } from "@/components/board/BoardColumn"
 import { boardColumns } from "@/components/board/boardConfig"
+import { EditTaskDialog } from "@/components/task/EditTaskDialog"
 import { TaskCard } from "@/components/task/TaskCard"
-import type { Task, TaskStatus } from "@/types/task"
+import type {
+  Task,
+  TaskStatus,
+  UpdateTaskInput,
+} from "@/types/task"
 
 interface BoardProps {
   tasks: Task[]
@@ -24,14 +29,26 @@ interface BoardProps {
     taskId: string,
     status: TaskStatus,
   ) => Promise<unknown>
+  onUpdateTask: (
+    taskId: string,
+    input: UpdateTaskInput,
+  ) => Promise<unknown>
+  onDeleteTask: (taskId: string) => Promise<void>
 }
 
 export function Board({
   tasks,
   onMoveTask,
+  onUpdateTask,
+  onDeleteTask,
 }: BoardProps) {
   const [activeTask, setActiveTask] = useState<Task | null>(null)
+  const [selectedTaskId, setSelectedTaskId] =
+    useState<string | null>(null)
   const [moveError, setMoveError] = useState<string | null>(null)
+
+  const selectedTask =
+    tasks.find((task) => task.id === selectedTaskId) ?? null
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -107,6 +124,7 @@ export function Board({
             <p className="font-medium">
               The task could not be moved
             </p>
+
             <p className="mt-0.5 opacity-90">
               {moveError}
             </p>
@@ -135,6 +153,9 @@ export function Board({
                   key={column.id}
                   column={column}
                   tasks={columnTasks}
+                  onTaskSelect={(task) =>
+                    setSelectedTaskId(task.id)
+                  }
                 />
               )
             })}
@@ -155,6 +176,18 @@ export function Board({
           document.body,
         )}
       </DndContext>
+
+      <EditTaskDialog
+        task={selectedTask}
+        open={Boolean(selectedTask)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedTaskId(null)
+          }
+        }}
+        onUpdateTask={onUpdateTask}
+        onDeleteTask={onDeleteTask}
+      />
     </div>
   )
 }
