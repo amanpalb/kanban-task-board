@@ -141,8 +141,8 @@ export function Board({
         }}
         onDragCancel={handleDragCancel}
       >
-        <div className="overflow-x-auto pb-4">
-          <div className="flex min-w-max gap-4">
+        <div className="-mx-4 overflow-x-auto px-4 pb-4 sm:mx-0 sm:px-0">
+          <div className="flex min-w-max snap-x snap-mandatory gap-4">
             {boardColumns.map((column) => {
               const columnTasks = tasks.filter(
                 (task) => task.status === column.id,

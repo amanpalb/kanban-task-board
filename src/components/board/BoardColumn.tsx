@@ -27,7 +27,7 @@ export function BoardColumn({
     <section
       ref={setNodeRef}
       className={[
-        "flex min-h-[32rem] min-w-[18rem] flex-1 flex-col rounded-2xl border transition-colors",
+        "flex min-h-[30rem] w-[calc(100vw-3rem)] min-w-[calc(100vw-3rem)] snap-start flex-col rounded-2xl border transition-colors sm:w-80 sm:min-w-80 lg:w-[22rem] lg:min-w-[22rem]",
         isOver
           ? "border-primary/60 bg-primary/5"
           : "border-border/60 bg-muted/30",

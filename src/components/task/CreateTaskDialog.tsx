@@ -107,7 +107,7 @@ export function CreateTaskDialog({
         }
       />
 
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         <form
           className="space-y-6"
           onSubmit={handleSubmit(handleCreateTask)}
@@ -143,7 +143,9 @@ export function CreateTaskDialog({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="task-description">Description</Label>
+              <Label htmlFor="task-description">
+                Description
+              </Label>
 
               <Textarea
                 id="task-description"
@@ -170,7 +172,9 @@ export function CreateTaskDialog({
 
             <div className="grid gap-5 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="task-priority">Priority</Label>
+                <Label htmlFor="task-priority">
+                  Priority
+                </Label>
 
                 <select
                   id="task-priority"
@@ -190,7 +194,9 @@ export function CreateTaskDialog({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="task-due-date">Due date</Label>
+                <Label htmlFor="task-due-date">
+                  Due date
+                </Label>
 
                 <Input
                   id="task-due-date"

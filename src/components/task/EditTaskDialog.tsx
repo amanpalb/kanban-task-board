@@ -159,7 +159,7 @@ export function EditTaskDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleDialogChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         <form
           className="space-y-6"
           onSubmit={handleSubmit(handleUpdate)}
@@ -271,10 +271,11 @@ export function EditTaskDialog({
             )}
           </div>
 
-          <DialogFooter className="gap-2 sm:justify-between">
+          <DialogFooter className="flex-col-reverse gap-2 sm:flex-row sm:justify-between">
             <Button
               type="button"
               variant="destructive"
+              className="w-full sm:w-auto"
               disabled={isSubmitting || isDeleting}
               onClick={() => {
                 void handleDelete()
@@ -295,10 +296,11 @@ export function EditTaskDialog({
               )}
             </Button>
 
-            <div className="flex gap-2">
+            <div className="flex w-full flex-col-reverse gap-2 sm:w-auto sm:flex-row">
               <Button
                 type="button"
                 variant="outline"
+                className="w-full sm:w-auto"
                 disabled={isSubmitting || isDeleting}
                 onClick={() => handleDialogChange(false)}
               >
@@ -307,6 +309,7 @@ export function EditTaskDialog({
 
               <Button
                 type="submit"
+                className="w-full sm:w-auto"
                 disabled={isSubmitting || isDeleting}
               >
                 {isSubmitting ? (

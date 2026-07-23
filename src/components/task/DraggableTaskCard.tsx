@@ -34,7 +34,10 @@ export function DraggableTaskCard({
     <div
       ref={setNodeRef}
       style={style}
-      className={isDragging ? "opacity-30" : undefined}
+      className={[
+        "touch-pan-y",
+        isDragging ? "opacity-30" : "",
+      ].join(" ")}
       onClick={() => onSelect(task)}
       {...listeners}
       {...attributes}

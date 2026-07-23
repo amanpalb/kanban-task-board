@@ -81,9 +81,9 @@ function App() {
   return (
     <main className="min-h-screen bg-background">
       <header className="border-b border-border/70 bg-background/95">
-        <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-6 px-6 py-5">
+        <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 px-4 py-4 sm:gap-6 sm:px-6 sm:py-5">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
               <ClipboardList className="size-5" />
             </div>
 
@@ -92,7 +92,7 @@ function App() {
                 Momentum
               </h1>
 
-              <p className="text-xs text-muted-foreground">
+              <p className="hidden text-xs text-muted-foreground sm:block">
                 Personal task workspace
               </p>
             </div>
@@ -117,7 +117,7 @@ function App() {
         </div>
       </header>
 
-      <div className="border-b border-border/70 px-6 py-3 sm:hidden">
+      <div className="border-b border-border/70 px-4 py-3 sm:hidden">
         <div className="relative">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
 
@@ -132,13 +132,13 @@ function App() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1600px] space-y-8 px-6 py-8">
+      <div className="mx-auto max-w-[1600px] space-y-8 px-4 py-6 sm:px-6 sm:py-8">
         <section>
           <p className="text-sm font-medium text-muted-foreground">
             Overview
           </p>
 
-          <h2 className="mt-1 text-3xl font-semibold tracking-tight">
+          <h2 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
             Keep your work moving
           </h2>
 
@@ -173,6 +173,10 @@ function App() {
               {normalizedSearchQuery
                 ? `Showing ${filteredTasks.length} of ${tasks.length} tasks.`
                 : "Organize tasks across each stage of your workflow."}
+            </p>
+
+            <p className="mt-1 text-xs text-muted-foreground sm:hidden">
+              Swipe horizontally to view each stage.
             </p>
           </div>
 
