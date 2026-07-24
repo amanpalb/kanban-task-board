@@ -1,4 +1,4 @@
-import { CalendarDays, GripVertical } from "lucide-react"
+import { AlertTriangle, CalendarDays, GripVertical } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -45,7 +45,8 @@ const priorityBadgeClasses: Record<TaskPriority, string> = {
   low: "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/70 dark:bg-emerald-950/40 dark:text-emerald-300",
   medium:
     "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/70 dark:bg-amber-950/40 dark:text-amber-300",
-  high: "border-red-200 bg-red-50 text-red-700 dark:border-red-900/70 dark:bg-red-950/40 dark:text-red-300",
+  high:
+    "border-red-200 bg-red-50 text-red-700 dark:border-red-900/70 dark:bg-red-950/40 dark:text-red-300",
 }
 
 function formatDueDate(dueDate: string): string {
@@ -55,11 +56,29 @@ function formatDueDate(dueDate: string): string {
   }).format(new Date(`${dueDate}T00:00:00`))
 }
 
+function isTaskOverdue(task: Task): boolean {
+  if (!task.due_date) {
+    return false
+  }
+
+  if (task.status === "done") {
+    return false
+  }
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const dueDate = new Date(`${task.due_date}T00:00:00`)
+
+  return dueDate < today
+}
+
 export function TaskCard({
   task,
   isOverlay = false,
 }: TaskCardProps) {
   const taskColor = task.color ?? "gray"
+  const overdue = isTaskOverdue(task)
 
   return (
     <Card
@@ -104,8 +123,25 @@ export function TaskCard({
             {priorityLabels[task.priority]}
           </Badge>
 
+          {overdue && (
+            <Badge
+              variant="destructive"
+              className="gap-1"
+            >
+              <AlertTriangle className="size-3" />
+              Overdue
+            </Badge>
+          )}
+
           {task.due_date && (
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <div
+              className={[
+                "flex items-center gap-1 text-xs",
+                overdue
+                  ? "font-medium text-red-600 dark:text-red-400"
+                  : "text-muted-foreground",
+              ].join(" ")}
+            >
               <CalendarDays className="size-3.5" />
               {formatDueDate(task.due_date)}
             </div>
