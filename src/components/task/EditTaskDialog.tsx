@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { LoaderCircle, Save, Trash2 } from "lucide-react"
+import {
+  Check,
+  LoaderCircle,
+  Save,
+  Trash2,
+} from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -18,6 +23,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import type {
   Task,
+  TaskColor,
   TaskPriority,
   UpdateTaskInput,
 } from "@/types/task"
@@ -33,6 +39,16 @@ const editTaskSchema = z.object({
     .trim()
     .max(500, "The description must be 500 characters or fewer."),
   priority: z.enum(["low", "medium", "high"]),
+  color: z.enum([
+    "gray",
+    "blue",
+    "green",
+    "yellow",
+    "orange",
+    "red",
+    "purple",
+    "pink",
+  ]),
   dueDate: z.string(),
 })
 
@@ -49,6 +65,72 @@ interface EditTaskDialogProps {
   onDeleteTask: (taskId: string) => Promise<void>
 }
 
+interface ColorOption {
+  value: TaskColor
+  label: string
+  swatchClassName: string
+  selectedClassName: string
+}
+
+const colorOptions: ColorOption[] = [
+  {
+    value: "gray",
+    label: "Gray",
+    swatchClassName: "bg-slate-400",
+    selectedClassName:
+      "border-slate-500 bg-slate-50 dark:bg-slate-950/40",
+  },
+  {
+    value: "blue",
+    label: "Blue",
+    swatchClassName: "bg-blue-500",
+    selectedClassName:
+      "border-blue-500 bg-blue-50 dark:bg-blue-950/40",
+  },
+  {
+    value: "green",
+    label: "Green",
+    swatchClassName: "bg-emerald-500",
+    selectedClassName:
+      "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40",
+  },
+  {
+    value: "yellow",
+    label: "Yellow",
+    swatchClassName: "bg-yellow-400",
+    selectedClassName:
+      "border-yellow-500 bg-yellow-50 dark:bg-yellow-950/40",
+  },
+  {
+    value: "orange",
+    label: "Orange",
+    swatchClassName: "bg-orange-500",
+    selectedClassName:
+      "border-orange-500 bg-orange-50 dark:bg-orange-950/40",
+  },
+  {
+    value: "red",
+    label: "Red",
+    swatchClassName: "bg-red-500",
+    selectedClassName:
+      "border-red-500 bg-red-50 dark:bg-red-950/40",
+  },
+  {
+    value: "purple",
+    label: "Purple",
+    swatchClassName: "bg-violet-500",
+    selectedClassName:
+      "border-violet-500 bg-violet-50 dark:bg-violet-950/40",
+  },
+  {
+    value: "pink",
+    label: "Pink",
+    swatchClassName: "bg-pink-500",
+    selectedClassName:
+      "border-pink-500 bg-pink-50 dark:bg-pink-950/40",
+  },
+]
+
 export function EditTaskDialog({
   task,
   open,
@@ -64,6 +146,8 @@ export function EditTaskDialog({
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<EditTaskFormValues>({
     resolver: zodResolver(editTaskSchema),
@@ -71,9 +155,12 @@ export function EditTaskDialog({
       title: "",
       description: "",
       priority: "medium",
+      color: "gray",
       dueDate: "",
     },
   })
+
+  const selectedColor = watch("color")
 
   useEffect(() => {
     if (!task) {
@@ -84,6 +171,7 @@ export function EditTaskDialog({
       title: task.title,
       description: task.description ?? "",
       priority: task.priority,
+      color: task.color ?? "gray",
       dueDate: task.due_date ?? "",
     })
 
@@ -103,6 +191,7 @@ export function EditTaskDialog({
         title: values.title,
         description: values.description || null,
         priority: values.priority as TaskPriority,
+        color: values.color as TaskColor,
         due_date: values.dueDate || null,
       })
 
@@ -216,6 +305,66 @@ export function EditTaskDialog({
                   Maximum 500 characters
                 </p>
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Task color</Label>
+
+              <div
+                className="grid grid-cols-4 gap-2 sm:grid-cols-8"
+                role="radiogroup"
+                aria-label="Task color"
+              >
+                {colorOptions.map((option) => {
+                  const isSelected = selectedColor === option.value
+
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      role="radio"
+                      aria-checked={isSelected}
+                      aria-label={option.label}
+                      title={option.label}
+                      className={[
+                        "flex h-11 items-center justify-center rounded-lg border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                        isSelected
+                          ? option.selectedClassName
+                          : "border-border bg-background hover:bg-muted",
+                      ].join(" ")}
+                      onClick={() => {
+                        setValue("color", option.value, {
+                          shouldDirty: true,
+                          shouldValidate: true,
+                        })
+                      }}
+                    >
+                      <span
+                        className={[
+                          "flex size-6 items-center justify-center rounded-full",
+                          option.swatchClassName,
+                        ].join(" ")}
+                      >
+                        {isSelected && (
+                          <Check className="size-4 text-white" />
+                        )}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+
+              <input type="hidden" {...register("color")} />
+
+              {errors.color && (
+                <p className="text-sm text-destructive">
+                  {errors.color.message}
+                </p>
+              )}
+
+              <p className="text-xs text-muted-foreground">
+                Choose an accent color to help identify this task.
+              </p>
             </div>
 
             <div className="grid gap-5 sm:grid-cols-2">

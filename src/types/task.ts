@@ -15,12 +15,26 @@ export const taskPriorities = [
 
 export type TaskPriority = (typeof taskPriorities)[number]
 
+export const taskColors = [
+  "gray",
+  "blue",
+  "green",
+  "yellow",
+  "orange",
+  "red",
+  "purple",
+  "pink",
+] as const
+
+export type TaskColor = (typeof taskColors)[number]
+
 export interface Task {
   id: string
   title: string
   description: string | null
   status: TaskStatus
   priority: TaskPriority
+  color: TaskColor
   due_date: string | null
   user_id: string
   created_at: string
@@ -32,6 +46,7 @@ export interface CreateTaskInput {
   description?: string | null
   status?: TaskStatus
   priority?: TaskPriority
+  color?: TaskColor
   due_date?: string | null
 }
 
@@ -40,5 +55,6 @@ export interface UpdateTaskInput {
   description?: string | null
   status?: TaskStatus
   priority?: TaskPriority
+  color?: TaskColor
   due_date?: string | null
 }

@@ -48,6 +48,7 @@ export async function createTask(
       description: input.description?.trim() || null,
       status: input.status ?? "todo",
       priority: input.priority ?? "medium",
+      color: input.color ?? "gray",
       due_date: input.due_date ?? null,
       user_id: userId,
     })
