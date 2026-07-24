@@ -1,75 +1,159 @@
-# React + TypeScript + Vite
+# Kanban Task Board
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This app is a Kanban-style task management application built with React, TypeScript, and Supabase. It helps users organize their tasks and work with an implemented drag-and-drop interface with persistent cloud storage, customizable task colors, and automatic overdue task tracking.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Anonymous authentication with Supabase
+- Create, edit, and delete tasks
+- Drag-and-drop task organization
+- Custom task color accents
+- Automatic overdue task indicators
+- Real-time task search
+- Optimistic UI updates
+- Responsive design for desktop and mobile
+- Light and dark mode support
+- Persistent cloud storage
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Live Demo
 
-## Expanding the ESLint configuration
+**Application:** https://kanban-task-board-chi-seven.vercel.app/
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Repository:** https://github.com/amanpalb/kanban-task-board
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Frontend
 
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
+- React Hook Form
+- Zod
+- dnd-kit
+- Lucide React
+
+### Backend
+
+- Supabase
+  - PostgreSQL
+  - Authentication
+  - Database API
+
+### Deployment
+
+- Vercel
+
+---
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/YOUR_USERNAME/kanban-board.git
+cd kanban-board
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Install dependencies:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
+
+Create a `.env.local` file:
+
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Open the application at:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## Building for Production
+
+Build the application:
+
+```bash
+npm run build
+```
+
+Preview the production build:
+
+```bash
+npm run preview
+```
+
+---
+
+## Project Structure
+
+```text
+src/
+├── components/
+│   ├── board/
+│   ├── task/
+│   └── ui/
+├── hooks/
+├── lib/
+├── services/
+├── types/
+├── App.tsx
+└── main.tsx
+```
+
+---
+
+## Key Features
+
+### Drag-and-Drop Task Management
+
+### Task Customization
+
+### Overdue Tracking
+
+### Responsive Design for Desktop, Tablet, and Mobile Devices
+
+
+---
+
+## Future Enhancements
+
+Potential additions include:
+
+- User accounts
+- Multiple boards
+- Labels and tags
+- File attachments
+- Task comments
+- Notifications
+- Recurring tasks
+- Team collaboration
+
+---
+
+## Author
+
+Created by **Aman Bains**
+
+GitHub: https://github.com/amanpalb
+
+LinkedIn: https://www.linkedin.com/in/amansbains/
